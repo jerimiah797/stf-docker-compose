@@ -1,0 +1,40 @@
+# STF Remote Provider - Docker Compose Configuration
+#
+# Deploy this on machines that have physical Android devices connected via USB
+# Each remote connects back to the central server
+
+version: '3'
+
+services:
+  local-adb:
+    image: devicefarmer/adb:latest
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+
+  local-provider:
+    build: provider/
+    restart: unless-stopped
+    volumes:
+      # Optional: Mount custom device database (should match central server)
+      # - ./stf-devices:/app/node_modules/@devicefarmer/stf-device-db/dist
+    command: >
+      stf provider
+      --name ${STATION_NAME}
+      --connect-sub tcp://${PUBLIC_IP}:7250
+      --connect-push tcp://${PUBLIC_IP}:7270
+      --storage-url https://${PUBLIC_IP}/
+      --public-ip ${PUBLIC_IP}
+      --heartbeat-interval 10000
+      --connect-url-pattern "${STATION_IP}:<%= publicPort %>"
+      --screen-ws-url-pattern "wss://${PUBLIC_IP}/d/${STATION_NAME}/<%= serial %>/<%= publicPort %>/"
+      --adb-host local-adb
+      --min-port 7400
+      --max-port 7700
+      --allow-remote
+      --cleanup false
+    ports:
+      - 7400-7700:7400-7700
+    depends_on:
+      - local-adb

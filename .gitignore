@@ -1,0 +1,29 @@
+# Environment files (contain secrets)
+.env
+remote/.env
+
+# SSL certificates and private keys
+nginx/certs/*.crt
+nginx/certs/*.key
+nginx/certs/*.pem
+
+# Device database (should be a submodule)
+stf-devices/
+
+# Docker volumes (but keep Dockerfiles)
+storage-temp/*
+!storage-temp/Dockerfile
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Logs
+*.log
