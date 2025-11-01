@@ -10,7 +10,7 @@ That first implementation taught me invaluable lessons about distributed systems
 
 ## The Second Time Around (2019)
 
-In 2019, I joined a new company and immediately knew we needed a device farm. Armed with three years of experience, I built our second STF deployment from scratch. This time, I got it right.
+In 2019, I joined a new company and immediately knew we needed a device farm. Armed with three years of experience, I built our second STF deployment from scratch. This time, I refined the approach based on everything I'd learned.
 
 The architecture was different from the official documentation's systemd-based approach. I chose Docker Compose with a distributed setup:
 - **Central server** hosting the web UI, database, and core services
